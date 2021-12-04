@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Core.Extensions;
+using Entities;
+using Entities.Abstract;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ConsoleApp1
 {
@@ -6,7 +10,24 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //dependency Injection
+            ServiceProvider serviceProvider = new ServiceCollection()
+                                           .AddTransient<ICustomer, Customer>()
+                                           .BuildServiceProvider();
+
+            ICustomer customer = serviceProvider.GetService<ICustomer>();
+
+            customer.Id = 1;
+            customer.FirstName = "Serdar";
+            customer.LastName  = "Kose";
+            customer.PhoneNumber = "5303332211";
+
+            //1.extension ornegi
+            Console.WriteLine(customer.ContactInfo());
+            //2.extension ornegi
+            Console.WriteLine(customer.InstanceType());  //output: Entities.Customer
+
+            Console.ReadLine();
         }
     }
 }
